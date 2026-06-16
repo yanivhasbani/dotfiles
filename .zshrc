@@ -1,5 +1,9 @@
 # ZSH
 
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
+
 _configure_terminal_format_and_colors() {
 	# Terminal cmd colors and format
 
