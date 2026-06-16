@@ -1,0 +1,43 @@
+from xonsh.built_ins import XSH
+
+import shlex
+
+env = XSH.env
+
+env['HTZone'] = '~/Developer/HTZone'
+env['XONSH_SHOW_TRACEBACK'] = True
+
+def enter_htzone():
+	cd ~/Developer/HTZone
+
+def _reload():
+	source ~/.xonshrc
+
+# BASH
+aliases['ls'] = ['ls', '-laG']
+
+# GIT
+def _ggpush(args):
+    XSH.builtins.execx(f'git push origin {XSH.env["PROMPT_FIELDS"]["curr_branch"]()} {shlex.join(args)}')
+
+aliases['ga'] = 'git add'
+aliases['gpush'] = _ggpush
+aliases['gc'] = 'git checkout'
+aliases['gpull'] = 'git pull'
+aliases['gl'] = 'git log --oneline --decorate --graph'
+aliases['gd'] = 'git difftool'
+aliases['gs'] = 'git status'
+aliases['gclone'] = 'git clone --recurse-submodules'
+
+# HTZone
+aliases['htzone'] = enter_htzone
+
+# Xonsh
+aliases['reload'] = _reload
+aliases['rc'] = 'subl ~/.xonshrc'
+aliases['run_php_server'] = 'sudo php -S 127.0.0.1:80 -t .'
+
+# PHP
+aliases['storm'] = '/Applications/PhpStorm.app/Contents/MacOS/phpstorm .'
+
+# To make xonsh autocomplete git
