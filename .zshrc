@@ -28,5 +28,6 @@ alias rc='subl ~/.zshrc'
 
 alias gl='git log --oneline --decorate --graph'
 alias gs='git status'
+alias gb='git branch'
 alias gclone='git clone --recursive'
 
