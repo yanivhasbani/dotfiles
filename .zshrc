@@ -4,6 +4,8 @@
 # :A resolves symlinks to an absolute real path.
 # :h strips the filename, returning the parent directory.
 DOTFILES_DIR="${${(%):-%x}:A:h}"
+BIN_DIR="$DOTFILES_DIR/bin"
+export PATH="$BIN_DIR:$PATH"
 
 source "$DOTFILES_DIR/zsh/zshrc.d/prompt.zsh"
 source "$DOTFILES_DIR/zsh/zshrc.d/aliases.zsh"
