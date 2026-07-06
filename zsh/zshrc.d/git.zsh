@@ -22,7 +22,7 @@ _git_stage_files_interactively() {
 
 _git_infer_module_name() {
 	if [[ $# -eq 1 ]]; then
-		basename "$1"
+		echo "${1:t:r}"
 		return
 	fi
 
