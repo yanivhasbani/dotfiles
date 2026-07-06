@@ -21,6 +21,11 @@ _git_stage_files_interactively() {
 }
 
 _git_infer_module_name() {
+	if [[ $# -eq 1 ]]; then
+		basename "$1"
+		return
+	fi
+
 	local dirs=()
 	for f in "$@"; do
 		local dir=$(dirname "$f")
