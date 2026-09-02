@@ -21,7 +21,7 @@ claude() {
 
   if (( $#pool )); then
     local dir=$HOME/.claude/session-colors; mkdir -p $dir
-    local -A swatch=(Umber 🟫 "Deep Sea" 🟦 Aubergine 🟪 Lagoon 🟩 Frost ⬜)
+    local -A swatch=(Umber 🟫 "Deep Sea" 🟦 Aubergine 🟪 Fern 🟩 Garnet 🟥 Sage 🟨)
     local pick owner
     for cand in $pool; do
       owner=$(<$dir/${cand// /_}) 2>/dev/null
