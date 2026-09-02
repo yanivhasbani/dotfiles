@@ -21,14 +21,29 @@ claude() {
 
   if (( $#pool )); then
     local dir=$HOME/.claude/session-colors; mkdir -p $dir
-    local -A swatch=(Umber 🟫 "Deep Sea" 🟦 Aubergine 🟪 Lagoon 🟩 Frost ⬜)
-    local pick owner
+    local -A swatch=(Umber 🟫 "Deep Sea" 🟦 Aubergine 🟪 Fern 🟩 Garnet 🟥 Sage 🟨)
+    local pick owner cand
+    # Reclaim the profile this shell already holds. kill -0 always succeeds on our
+    # own pid, so without this pass a tab that relaunches claude reads its previous
+    # claim as "taken by a live shell" and burns a new profile every time.
     for cand in $pool; do
       owner=$(<$dir/${cand// /_}) 2>/dev/null
-      if [[ -z $owner ]] || ! kill -0 $owner 2>/dev/null; then pick=$cand; break; fi
+      [[ $owner == $$ ]] && { pick=$cand; break; }
     done
+    if [[ -z $pick ]]; then
+      for cand in $pool; do
+        owner=$(<$dir/${cand// /_}) 2>/dev/null
+        if [[ -z $owner ]] || ! kill -0 $owner 2>/dev/null; then pick=$cand; break; fi
+      done
+    fi
     [[ -z $pick ]] && pick=$pool[$((RANDOM % $#pool + 1))]
     print $$ > $dir/${pick// /_}
+    # Release anything else this shell still owns, so one shell holds one profile.
+    for cand in $pool; do
+      [[ $cand == $pick ]] && continue
+      owner=$(<$dir/${cand// /_}) 2>/dev/null
+      [[ $owner == $$ ]] && rm -f $dir/${cand// /_}
+    done
     printf '\033]1337;SetProfile=%s\a' "$pick"
     # Leave a user-supplied name untouched; only name the session when it has none.
     if [[ " $* " != *" -n "* && " $* " != *" --name "* ]]; then
