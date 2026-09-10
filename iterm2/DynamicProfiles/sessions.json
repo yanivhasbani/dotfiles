@@ -2,6 +2,7 @@
   "Profiles": [
     {
       "Name": "Umber",
+      "Swatch": "🟫",
       "Guid": "sess-umber",
       "Dynamic Profile Parent Name": "Default",
       "Background Color": {
@@ -134,6 +135,7 @@
     },
     {
       "Name": "Deep Sea",
+      "Swatch": "🟦",
       "Guid": "sess-deepsea",
       "Dynamic Profile Parent Name": "Default",
       "Background Color": {
@@ -266,6 +268,7 @@
     },
     {
       "Name": "Aubergine",
+      "Swatch": "🟪",
       "Guid": "sess-aubergine",
       "Dynamic Profile Parent Name": "Default",
       "Background Color": {
@@ -398,6 +401,7 @@
     },
     {
       "Name": "Fern",
+      "Swatch": "🟩",
       "Guid": "sess-fern",
       "Dynamic Profile Parent Name": "Default",
       "Background Color": {
@@ -530,6 +534,7 @@
     },
     {
       "Name": "Garnet",
+      "Swatch": "🟥",
       "Guid": "sess-garnet",
       "Dynamic Profile Parent Name": "Default",
       "Background Color": {
@@ -662,6 +667,7 @@
     },
     {
       "Name": "Sage",
+      "Swatch": "🟨",
       "Guid": "sess-sage",
       "Dynamic Profile Parent Name": "Default",
       "Background Color": {
