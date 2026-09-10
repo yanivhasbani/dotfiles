@@ -44,7 +44,7 @@ so a Pi adapter can reuse it later.
 
 - **At launch** — `zsh/zshrc.d/claude.zsh` wraps `claude`: for a fresh interactive
   session it runs `session_color.sh pick` *before* `claude` starts (the one step a
-  hook can't do), applies the choice, and names the session `dir 🟩`. Resumed
+  hook can't do), applies the choice, and names the session `🟩 dir`. Resumed
   (`-r`/`-c`) and non-interactive (`-p`) invocations pass straight through.
 - **On resume** — including the in-CLI `/resume` picker, which the shell wrapper
   never sees — the [`yh-skills`](https://github.com/yanivhasbani/skills) repo's
@@ -75,5 +75,5 @@ Three things to keep in mind when adding or editing a profile:
   Overriding them per profile only makes sense for a background that differs in
   brightness from the rest, and none of these do.
 - **Give it a `"Swatch"`** — a distinct emoji. `session_color.sh` uses it for the
-  picker menu, for the `dir 🟩` session name, and to recognise the profile when a
+  picker menu, for the `🟩 dir` session name, and to recognise the profile when a
   session is resumed. iTerm2 ignores the key.
