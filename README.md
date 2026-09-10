@@ -13,9 +13,14 @@ This repo depends on the [MAC install env](https://github.com/yanivhasbani/setup
 
 ## iTerm2 session profiles
 
-`iterm2/DynamicProfiles/sessions.json` defines the colour profiles that
-`zsh/zshrc.d/claude.zsh` offers at the start of a Claude session. Link it into
-iTerm2's dynamic profiles directory:
+`iterm2/DynamicProfiles/sessions.json` defines a colour profile per concurrent
+Claude session, so sessions stay distinguishable in a tab strip and in a
+`/resume` picker. Each entry carries a `"Swatch"` emoji (`🟩` …) — the single
+source of truth for the name↔swatch↔profile mapping, since the swatch also has to
+travel in the session name to reach the mobile app, where escape-sequence colours
+never arrive.
+
+Link the file into iTerm2's dynamic profiles directory:
 
 ```sh
 mkdir -p ~/Library/Application\ Support/iTerm2/DynamicProfiles
@@ -26,6 +31,27 @@ ln -sf "$PWD/iterm2/DynamicProfiles/sessions.json" \
 Each profile inherits from `Default` and overrides only colours. Backgrounds stay
 near-black so no session reads as bright; the colour is carried by the tab strip,
 which needs Appearance → Theme → **Minimal** to be visible.
+
+### How a session gets its colour
+
+`iterm2/session_color.sh` is the colour engine — it lists the pool, runs the
+picker, applies a profile, tracks which colour each live session holds, and maps a
+session name back to its profile. Each integration is a thin adapter over its
+subcommands (`pool`, `pick`, `apply`, `swatch`, `apply-for-title`). It exits
+silently when it isn't running under iTerm2, so adapters can call it
+unconditionally. The engine is agent-neutral — nothing in it is Claude-specific —
+so a Pi adapter can reuse it later.
+
+- **At launch** — `zsh/zshrc.d/claude.zsh` wraps `claude`: for a fresh interactive
+  session it runs `session_color.sh pick` *before* `claude` starts (the one step a
+  hook can't do), applies the choice, and names the session `dir 🟩`. Resumed
+  (`-r`/`-c`) and non-interactive (`-p`) invocations pass straight through.
+- **On resume** — including the in-CLI `/resume` picker, which the shell wrapper
+  never sees — the [`yh-skills`](https://github.com/yanivhasbani/skills) repo's
+  Claude Code `SessionStart` hook calls
+  `session_color.sh apply-for-title "<session name>"`, reapplying the profile from
+  the swatch in the name. It locates the script through `CLAUDE_SESSION_COLOR_SH`,
+  exported by `claude.zsh`; without this repo installed it no-ops.
 
 ### Editing the profiles
 
@@ -39,7 +65,7 @@ Nothing warns you when this goes wrong. Selecting a profile iTerm2 has never loa
 is a silent no-op, so a stale cache is indistinguishable from a colour that simply
 refuses to apply.
 
-Two things to keep in mind when adding or editing a profile:
+Three things to keep in mind when adding or editing a profile:
 
 - **Write every colour three times** — `Key`, `Key (Light)` and `Key (Dark)`. The
   parent profile sets *Use Separate Colors for Light and Dark Mode*, and under that
@@ -48,3 +74,6 @@ Two things to keep in mind when adding or editing a profile:
 - **Leave the ANSI palette alone.** All sixteen ANSI colours come from `Default`.
   Overriding them per profile only makes sense for a background that differs in
   brightness from the rest, and none of these do.
+- **Give it a `"Swatch"`** — a distinct emoji. `session_color.sh` uses it for the
+  picker menu, for the `dir 🟩` session name, and to recognise the profile when a
+  session is resumed. iTerm2 ignores the key.
