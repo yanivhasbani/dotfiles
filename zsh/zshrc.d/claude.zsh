@@ -44,6 +44,8 @@ claude() {
   if [[ $invocation == *" -n "* || $invocation == *" --name "* ]]; then
     command claude "$@"
   else
-    command claude -n "${PWD:t} $("$CLAUDE_SESSION_COLOR_SH" swatch "$profile")" "$@"
+    local swatch
+    swatch=$("$CLAUDE_SESSION_COLOR_SH" swatch "$profile")
+    command claude -n "${swatch:+$swatch }${PWD:t}" "$@"
   fi
 }
